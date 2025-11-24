@@ -31,6 +31,12 @@ function App() {
     otp: '',
     newPassword: ''
   });
+  const [passwordVisibility, setPasswordVisibility] = useState({
+    login: false,
+    register: false,
+    otp: false
+  });
+  const [authLoading, setAuthLoading] = useState(false);
   const [token, setToken] = useState(() => localStorage.getItem('token'));
   const [user, setUser] = useState(() => {
     const stored = localStorage.getItem('user');
@@ -218,6 +224,7 @@ function App() {
   };
 
   const handleRegister = async () => {
+    setAuthLoading(true);
     try {
       const { data } = await api.post('/api/auth/register', {
         username: authForm.username,
@@ -235,10 +242,13 @@ function App() {
         alert(errorMsg);
       }
       console.error('Registration error:', error.response?.data || error.message);
+    } finally {
+      setAuthLoading(false);
     }
   };
 
   const handleLogin = async () => {
+    setAuthLoading(true);
     try {
       const { data } = await api.post('/api/auth/login', {
         identifier: authForm.identifier,
@@ -255,6 +265,8 @@ function App() {
         alert(errorMsg);
       }
       console.error('Login error:', error.response?.data || error.message);
+    } finally {
+      setAuthLoading(false);
     }
   };
 
@@ -406,13 +418,33 @@ function App() {
               value={authForm.identifier}
               onChange={(e) => setAuthForm({ ...authForm, identifier: e.target.value })}
             />
-            <input
-              placeholder="Password"
-              type="password"
-              value={authForm.password}
-              onChange={(e) => setAuthForm({ ...authForm, password: e.target.value })}
-            />
-            <button onClick={handleLogin}>Login</button>
+            <div className="password-field">
+              <input
+                placeholder="Password"
+                type={passwordVisibility.login ? 'text' : 'password'}
+                value={authForm.password}
+                onChange={(e) => setAuthForm({ ...authForm, password: e.target.value })}
+              />
+              <button
+                type="button"
+                className="password-toggle"
+                onClick={() =>
+                  setPasswordVisibility((prev) => ({ ...prev, login: !prev.login }))
+                }
+              >
+                {passwordVisibility.login ? '🙈' : '👁️'}
+              </button>
+            </div>
+            <button onClick={handleLogin} disabled={authLoading}>
+              {authLoading ? (
+                <>
+                  <span className="spinner" />
+                  Processing...
+                </>
+              ) : (
+                'Login'
+              )}
+            </button>
           </>
         )}
 
@@ -428,13 +460,33 @@ function App() {
               value={authForm.email}
               onChange={(e) => setAuthForm({ ...authForm, email: e.target.value })}
             />
-            <input
-              placeholder="Password"
-              type="password"
-              value={authForm.password}
-              onChange={(e) => setAuthForm({ ...authForm, password: e.target.value })}
-            />
-            <button onClick={handleRegister}>Create account</button>
+            <div className="password-field">
+              <input
+                placeholder="Password"
+                type={passwordVisibility.register ? 'text' : 'password'}
+                value={authForm.password}
+                onChange={(e) => setAuthForm({ ...authForm, password: e.target.value })}
+              />
+              <button
+                type="button"
+                className="password-toggle"
+                onClick={() =>
+                  setPasswordVisibility((prev) => ({ ...prev, register: !prev.register }))
+                }
+              >
+                {passwordVisibility.register ? '🙈' : '👁️'}
+              </button>
+            </div>
+            <button onClick={handleRegister} disabled={authLoading}>
+              {authLoading ? (
+                <>
+                  <span className="spinner" />
+                  Creating...
+                </>
+              ) : (
+                'Create account'
+              )}
+            </button>
           </>
         )}
 

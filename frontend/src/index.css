@@ -48,6 +48,52 @@ button {
   color: inherit;
 }
 
+.password-field {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.password-field input {
+  width: 100%;
+  padding-right: 3rem;
+  margin: 0 0 0.9rem 0;
+}
+
+.password-toggle {
+  position: absolute;
+  right: 0.75rem;
+  background: none;
+  border: none;
+  color: #94a3b8;
+  cursor: pointer;
+  font-size: 1rem;
+  display: flex;
+  align-items: center;
+  height: 100%;
+}
+
+.password-toggle:hover {
+  color: #e2e8f0;
+}
+
+.spinner {
+  width: 1rem;
+  height: 1rem;
+  border: 2px solid rgba(226, 232, 240, 0.25);
+  border-top-color: #e2e8f0;
+  border-radius: 9999px;
+  animation: spin 0.75s linear infinite;
+  margin-right: 0.5rem;
+  display: inline-block;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
 .auth-card button {
   width: 100%;
   padding: 0.9rem;
