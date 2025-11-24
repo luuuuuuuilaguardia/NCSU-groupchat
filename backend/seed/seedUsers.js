@@ -1,5 +1,5 @@
-// seed/seedUsers.js
 const mongoose = require('mongoose');
+const bcrypt = require('bcryptjs');
 const User = require('../models/User');
 require('dotenv').config();
 
@@ -11,15 +11,19 @@ const createUsers = async () => {
 
   for (let i = 1; i <= 10; i++) {
     users.push({
-      username: `admin${i}`,
-      password: `password${i}`,
+      username: `friend${i}`,
+      email: `friend${i}@example.com`,
+      password: await bcrypt.hash(`Password${i}!`, 10)
     });
   }
 
-  await User.deleteMany(); // optional: clean slate
+  await User.deleteMany();
   await User.insertMany(users);
-  console.log('10 admin users created!');
+  console.log('10 demo users created!');
   process.exit();
 };
 
-createUsers();
+createUsers().catch((err) => {
+  console.error(err);
+  process.exit(1);
+});
