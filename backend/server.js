@@ -99,13 +99,18 @@ app.use('/api/friends', friendRoutes);
 app.use('/api/messages', messageRoutes);
 app.use('/api/groups', groupRoutes);
 
-mongoose
-  .connect(process.env.MONGO_URI, {
+mongoose.connect(process.env.MONGO_URI, {
   useNewUrlParser: true,
   useUnifiedTopology: true
 })
-.then(() => console.log('✅ MongoDB connected'))
-  .catch((err) => console.error('❌ MongoDB connection error:', err));
+.then(() => {
+  console.log('✅ MongoDB connected');
+})
+.catch((err) => {
+  console.error('❌ MongoDB connection error:', err);
+  process.exit(1);
+});
+
 
 const onlineUsers = new Map();
 
