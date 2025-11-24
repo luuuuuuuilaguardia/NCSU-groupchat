@@ -73,8 +73,25 @@ button {
   height: 100%;
 }
 
+.auth-card .password-toggle {
+  width: auto;
+  padding: 0;
+  margin: 0;
+  background: transparent;
+  border: none;
+  box-shadow: none;
+}
+
+.auth-card .password-toggle:focus {
+  outline: none;
+}
+
 .password-toggle:hover {
   color: #e2e8f0;
+}
+
+.auth-card button .spinner {
+  margin-right: 0.35rem;
 }
 
 .spinner {
